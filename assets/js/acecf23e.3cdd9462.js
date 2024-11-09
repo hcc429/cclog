@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkcclog=self.webpackChunkcclog||[]).push([[903],{1912:l=>{l.exports=JSON.parse('{"blogBasePath":"/cclog/blog","blogTitle":"Blog","authorsListPath":"/cclog/blog/authors"}')}}]);
