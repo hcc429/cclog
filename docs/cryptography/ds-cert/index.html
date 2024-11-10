@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-tw" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-cryptography/ds-cert" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.6.1">
+<title data-rh="true">理解數位簽章與憑證 | cclog</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://hcc429.github.io/cclog/docs/cryptography/ds-cert"><meta data-rh="true" property="og:locale" content="zh_tw"><meta data-rh="true" name="docusaurus_locale" content="zh-tw"><meta data-rh="true" name="docsearch:language" content="zh-tw"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="理解數位簽章與憑證 | cclog"><meta data-rh="true" name="description" content="可以借我三萬嗎？"><meta data-rh="true" property="og:description" content="可以借我三萬嗎？"><meta data-rh="true" property="og:image" content="https://hcc429.github.io/cclog/../static/img/docusaurus.png"><meta data-rh="true" name="twitter:image" content="https://hcc429.github.io/cclog/../static/img/docusaurus.png"><link data-rh="true" rel="icon" href="/cclog/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://hcc429.github.io/cclog/docs/cryptography/ds-cert"><link data-rh="true" rel="alternate" href="https://hcc429.github.io/cclog/docs/cryptography/ds-cert" hreflang="zh-tw"><link data-rh="true" rel="alternate" href="https://hcc429.github.io/cclog/docs/cryptography/ds-cert" hreflang="x-default"><link rel="alternate" type="application/rss+xml" href="/cclog/blog/rss.xml" title="cclog RSS Feed">
+<link rel="alternate" type="application/atom+xml" href="/cclog/blog/atom.xml" title="cclog Atom Feed">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css" integrity="sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM" crossorigin="anonymous"><link rel="stylesheet" href="/cclog/assets/css/styles.cfbac796.css">
+<script src="/cclog/assets/js/runtime~main.7d196858.js" defer="defer"></script>
+<script src="/cclog/assets/js/main.a570225f.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();t(null!==e?e:"light")}(),function(){try{const n=new URLSearchParams(window.location.search).entries();for(var[t,e]of n)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="跳至主要内容"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">跳至主要内容</a></div><nav aria-label="主導航" class="navbar navbar--fixed-top"><div class="navbar__inner"><div class="navbar__items"><button aria-label="切換導覽列" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/cclog/"><div class="navbar__logo"><img src="/cclog/img/icons8-cat-100.png" alt="My Site Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/cclog/img/icons8-cat-100-dark.png" alt="My Site Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">cclog</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/cclog/docs/intro">Notes</a><a class="navbar__item navbar__link" href="/cclog/blog">Blog</a></div><div class="navbar__items navbar__items--right"><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="切換淺色/深色模式（當前為淺色模式）" aria-label="切換淺色/深色模式（當前為淺色模式）" aria-live="polite" aria-pressed="false"><svg viewBox="0 0 24 24" width="24" height="24" class="lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" class="darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="回到頂部" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="文件側邊欄" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/cclog/docs/intro">Tutorial Intro</a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist menu__link--active" href="/cclog/docs/category/碼農入門密碼學">碼農入門密碼學</a><button aria-label="收起側邊欄分類 &#x27;碼農入門密碼學&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul style="display:block;overflow:visible;height:auto" class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/cclog/docs/cryptography/dh">理解 Diffie–Hellman 密鑰交換</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/cclog/docs/cryptography/ds-cert">理解數位簽章與憑證</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/cclog/docs/cryptography/rsa">理解 RSA</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/cclog/docs/cryptography/ssl">理解 TLS/SSL</a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" href="/cclog/docs/category/docker">Docker</a><button aria-label="展開側邊欄分類 &#x27;Docker&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="頁面路徑"><ul class="breadcrumbs" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="breadcrumbs__item"><a aria-label="主頁面" class="breadcrumbs__link" href="/cclog/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li itemscope="" itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="breadcrumbs__item"><a class="breadcrumbs__link" itemprop="item" href="/cclog/docs/category/碼農入門密碼學"><span itemprop="name">碼農入門密碼學</span></a><meta itemprop="position" content="1"></li><li itemscope="" itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link" itemprop="name">理解數位簽章與憑證</span><meta itemprop="position" content="2"></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">本頁導覽</button></div><div class="theme-doc-markdown markdown"><header><h1>理解數位簽章與憑證</h1></header><h2 class="anchor anchorWithStickyNavbar_LWe7" id="前言">前言<a href="#前言" class="hash-link" aria-label="前言的直接連結" title="前言的直接連結">​</a></h2>
+<p>很久以前在弄 final project 時給自己搞了個網域<br>
+<!-- -->在弄憑證時搞得焦頭爛額因為完全不懂 (密碼學都白學)<br>
+<!-- -->所以今天回來理解一下憑證到底是什麼，gogo٩(˃̶͈̀௰˂̶͈́)و</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="在嗎可以借我三萬塊嗎">在嗎，可以借我三萬塊嗎<a href="#在嗎可以借我三萬塊嗎" class="hash-link" aria-label="在嗎，可以借我三萬塊嗎的直接連結" title="在嗎，可以借我三萬塊嗎的直接連結">​</a></h2>
+<p>在理解憑證之前我們需要先知道數位簽章是什麼<br>
+<!-- -->前陣子很多人的哀居被盜<br>
+<!-- -->就會看到以下對話 (截自網路)<br>
+<!-- -->甚至還有自己的寵物帳被盜跑來跟自己借錢的<br>
+<img decoding="async" loading="lazy" alt="asd" src="/cclog/assets/images/ruthere-bc50a8479f75333f805a68d9054e4d39.jpg" width="600" height="1066" class="img_ev3q"></p>
+<p>其實有兩個可能 ( 寵物帳被盜另當別論 )</p>
+<ol>
+<li>這是詐騙集團</li>
+<li>這是本人，只是他可以謊稱被盜來耍賴</li>
+</ol>
+<p>這兩個問題的根本原因其實是我們不能確認對方的身份<br>
+<!-- -->當然如果今天在 2024 哀居開個視訊錄個影就能解決上述問題<br>
+<!-- -->但在電腦的世界裡沒有這麼簡單<br>
+<!-- -->而數位簽章就是來解決上述問題的一個工具</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="數位簽章">數位簽章<a href="#數位簽章" class="hash-link" aria-label="數位簽章的直接連結" title="數位簽章的直接連結">​</a></h2>
+<p>數位簽章就是要解決確認身份的問題<br>
+<!-- -->那我們要確認一個人最簡單的方式就是他說出一件只有他知道的事情<br>
+<!-- -->這其實很像在公鑰密碼裡面<br>
+<!-- -->我們可以透過公鑰加密訊息，只有私鑰才能解密<br>
+<!-- -->只是今天是反過來我必須向你證明我有我的私鑰<br>
+<!-- -->所以我們可以把公鑰密碼反過來使用<br>
+<!-- -->使用私鑰加密，只有公鑰才能解密<br>
+<!-- -->如果今天我能使用你的公鑰正確解密，就相信你確實擁有私鑰<br>
+<!-- -->如果覺得很難懂，可以想像 <code>2 x 5 </code> 跟 <code>5 x 2</code> 結果是一樣的<br>
+<!-- -->用 2 加密就能用 5 解密，用 5 加密就能用 2 解密<br>
+<!-- -->以下這張圖簡單的描述了兩者差別 (圖片概念來自圖解密碼技術)<br>
+<img decoding="async" loading="lazy" src="/cclog/assets/images/compare-0b9b4c88a479edcc2421be366290ecc5.png" width="949" height="842" class="img_ev3q"></p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="證書">證書<a href="#證書" class="hash-link" aria-label="證書的直接連結" title="證書的直接連結">​</a></h2>
+<p>在講完了數位簽章後，那我們就可以進到證書的部分！<br>
+<!-- -->證書是數位簽章最好的一個實際應用<br>
+<!-- -->在我們瀏覽網頁時，我們會向該網域發出請求<br>
+<!-- -->在我們建立安全的連線之前，可能會有反派角色來偽裝或竄改<br>
+<!-- -->因此我們需要 server 端向我們證明他就是 server 本人<br>
+<!-- -->而這個證明就是透過證書<br>
+<!-- -->但這個過程有點複雜<br>
+<!-- -->在我們實際講解之前可以用一個 生動一點的例子來描述這個過程</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="你是哪裡人">你是哪裡人？<a href="#你是哪裡人" class="hash-link" aria-label="你是哪裡人？的直接連結" title="你是哪裡人？的直接連結">​</a></h3>
+<p>想像今天有人詢問我的出生地<br>
+<!-- -->那我們如何怎麼證明我說的是真的呢？<br>
+<!-- -->當然就是拿出我們的身分證之類的<br>
+<!-- -->雖然這可能是偽造的<br>
+<!-- -->但上面會有標註說是哪個縣市蓋章核發的<br>
+<!-- -->今天對方就可以去該縣市區公所詢問這身分證到底是不是真的<br>
+<!-- -->但這邊會有一個問題，我怎麼知道區公所是真的區公所？<br>
+<!-- -->假的區公所也可以說那是真的，這時候就變成跟一開始一樣的情況<br>
+<!-- -->區公所必須向你證明他們真的是區公所，有上面市政府的蓋章<br>
+<!-- -->於是乎你又又去市政府詢問，但市政府又必須證明他們是市政府<br>
+<!-- -->如此反覆直到遇到一個夠大的官像是總統沒人可以幫他證明</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="信任鏈">信任鏈<a href="#信任鏈" class="hash-link" aria-label="信任鏈的直接連結" title="信任鏈的直接連結">​</a></h3>
+<p>上述的過程稱為信任鏈，就是透過層層的確認來建立信任的關係<br>
+<!-- -->而最後你到底相不相信眼前的人取決於總統<br>
+<!-- -->總統說不，前面的都全盤不相信<br>
+<!-- -->總統說好，前面的人通通相信<br>
+<!-- -->而實際情況中，例子中的我就是 server<br>
+<!-- -->必須向對方證明我的身份<br>
+<!-- -->而那些政府機關實際上稱為憑證認證機構 (CA)<br>
+<!-- -->蓋的章也就是數位簽名<br>
+<!-- -->最上層的稱為 Root CA<br>
+<!-- -->但這邊你可能會有一些疑問</p>
+<ul>
+<li>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="世界上這麼多組織如果該組織最後的-root-ca-我不認識怎  麼辦">世界上這麼多組織，如果該組織最後的 Root CA 我不認識怎麼辦？<a href="#世界上這麼多組織如果該組織最後的-root-ca-我不認識怎麼辦" class="hash-link" aria-label="世界上這麼多組織，如果該組織最後的 Root CA 我不認識怎麼辦？的直接連結" title="世界上這麼多組織，如果該組織最後的 Root CA 我不認識怎麼辦？的直接連結">​</a></h4>
+<!-- -->不認識的話通常瀏覽器都會跳警告，你也可以自行匯入 Root CA 讓瀏覽器相信</li>
+<li>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="我一開始是怎麼認識那些-root-ca-的">我一開始是怎麼認識那些 Root CA 的？<a href="#我一開始是怎麼認識那些-root-ca-的" class="hash-link" aria-label="我一開始是怎麼認識那些 Root CA 的？的直接連結" title="我一開始是怎麼認識那些 Root CA 的？的直接連結">​</a></h4>
+<!-- -->這是一個好問題，因為如果最後一關是冒牌貨那前面都白費了，因此現在的作業系統預設都會有</li>
+<li>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="為什麼需要這些政府機構而不是直接由-root-ca-認證">為什麼需要這些政府機構，而不是直接由 Root CA 認證？<a href="#為什麼需要這些政府機構而不是直接由-root-ca-認證" class="hash-link" aria-label="為什麼需要這些政府機構，而不是直接由 Root CA 認證？的直接連結" title="為什麼需要這些政府機構，而不是直接由 Root CA 認證？的直接連結">​</a></h4>
+<!-- -->Root CA 的數量不多，如果要幫所有需要的人簽名會累壞</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="再深一點">再深一點<a href="#再深一點" class="hash-link" aria-label="再深一點的直接連結" title="再深一點的直接連結">​</a></h3>
+<p>前面講了一些概念，但沒有實際的東西非常空虛：（<br>
+<!-- -->我們玩真的，直接看看網站的憑證<br>
+<!-- -->今天如果用 terminal  可以輸入下面指令獲取 google.com 的憑證</p>
+<div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">$ openssl s_client -showcerts -connect google.com:443  </span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="複製程式碼至剪貼簿" title="複製" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>就會出現類似底下的輸出
+只是會有 3 次，因為有 3 層</p>
+<div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">Connecting to 142.250.196.206</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">CONNECTED(00000005)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">depth=2 C=US, O=Google Trust Services LLC, CN=GTS Root R1</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">verify return:1</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">depth=1 C=US, O=Google Trust Services, CN=WR2</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">verify return:1</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">depth=0 CN=*.google.com</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">verify return:1</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">---</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Certificate chain</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"> 0 s:CN=*.google.com</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">   i:C=US, O=Google Trust Services, CN=WR2</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">   a:PKEY: id-ecPublicKey, 256 (bit); sigalg: RSA-SHA256</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">   v:NotBefore: Aug 26 06:33:47 2024 GMT; NotAfter: Nov 18 06:33:46 2024 GMT</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">-----BEGIN CERTIFICATE-----</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">MIIOCzCCDPOgAwIBAgIRAOZwzD+jTewjEAGJW3l4SCUwDQYJKoZIhvcNAQELBQAw</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">OzELMAkGA1UEBhMCVVMxHjAcBgNVBAoTFUdvb2dsZSBUcnVzdCBTZXJ2aWNlczEM</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="複製程式碼至剪貼簿" title="複製" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>看這個可能會看到中風，我們其實可以直接用瀏覽器檢視憑證<br>
+<!-- -->應該是網址前的鎖頭會有憑證檢視的按鈕
+<img decoding="async" loading="lazy" src="/cclog/assets/images/google-f5aa2b82b7162140115cc38d0974e79a.png" width="533" height="653" class="img_ev3q"></p>
+<p>在這邊我們很清楚的可以看到有三層，其實就是三張證書<br>
+<!-- -->最下層的就是 google.com 這個網域的證書<br>
+<!-- -->這個證書裡面包含了 google.com 的公鑰，以及上層 CA 對這張證書以及公鑰的 hash 的簽名<br>
+<!-- -->使用 hash 是因為 hash 能當成證書以及公鑰的指紋，較有效率<br>
+<!-- -->有了這個證書就能證明這個公鑰確實來自 google.com<br>
+<!-- -->就能大膽地使用它跟 google.com 加密連線</p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="panic">panic<a href="#panic" class="hash-link" aria-label="panic的直接連結" title="panic的直接連結">​</a></h4>
+<p>那今天如果有人篡改證書<br>
+<!-- -->把其中一部分換成他想要的值會發生什麼事呢？<br>
+<!-- -->如果他惡意的換掉證書的某些部分<br>
+<!-- -->在數位簽章驗證的過程會發現我們的 hash 與數位簽章的結果不符<br>
+<!-- -->就可以得知中間過程有出現問題</p></div></article><nav class="pagination-nav docusaurus-mt-lg" aria-label="文件選項卡"><a class="pagination-nav__link pagination-nav__link--prev" href="/cclog/docs/cryptography/dh"><div class="pagination-nav__sublabel">上一頁</div><div class="pagination-nav__label">理解 Diffie–Hellman 密鑰交換</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/cclog/docs/cryptography/rsa"><div class="pagination-nav__sublabel">下一頁</div><div class="pagination-nav__label">理解 RSA</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#前言" class="table-of-contents__link toc-highlight">前言</a></li><li><a href="#在嗎可以借我三萬塊嗎" class="table-of-contents__link toc-highlight">在嗎，可以借我三萬塊嗎</a></li><li><a href="#數位簽章" class="table-of-contents__link toc-highlight">數位簽章</a></li><li><a href="#證書" class="table-of-contents__link toc-highlight">證書</a><ul><li><a href="#你是哪裡人" class="table-of-contents__link toc-highlight">你是哪裡人？</a></li><li><a href="#信任鏈" class="table-of-contents__link toc-highlight">信任鏈</a></li><li><a href="#再深一點" class="table-of-contents__link toc-highlight">再深一點</a></li></ul></li></ul></div></div></div></div></main></div></div></div><footer class="footer"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2024 cclog. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

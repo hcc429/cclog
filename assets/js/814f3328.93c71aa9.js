@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkcclog=self.webpackChunkcclog||[]).push([[472],{5513:e=>{e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"\u6b63\u5728\u642c\u904b","permalink":"/cclog/blog/ing","unlisted":false,"date":"2024-11-09T08:15:29.831Z"}]}')}}]);
