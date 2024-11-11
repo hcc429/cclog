@@ -39,7 +39,6 @@
 <img decoding="async" loading="lazy" alt="封包" src="https://hcc429.github.io/cclog/assets/images/packet-d3346b198c70a6409144fbf85229f3d5.png" width="441" height="282" class="img_ev3q"></p>
 <p>那眼尖一點的老鐵就會發現 MSS 上面寫著 1460 Bytes<br>
 <!-- -->後面還有很多接近的數字，這就是標題的由來<br>
-<!-- -->By the way<br>
 <!-- -->我一直打這些數字但腦袋裡面出現的都是 1450 (亂講話</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="vpn">VPN<a href="https://hcc429.github.io/cclog/ccecret/vpn-mtu-mss#vpn" class="hash-link" aria-label="VPN的直接連結" title="VPN的直接連結">​</a></h2>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="wireguard">WireGuard<a href="https://hcc429.github.io/cclog/ccecret/vpn-mtu-mss#wireguard" class="hash-link" aria-label="WireGuard的直接連結" title="WireGuard的直接連結">​</a></h3>
