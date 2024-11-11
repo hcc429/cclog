@@ -51,8 +51,8 @@
 <!-- -->但我們今天的重點也不是他在做什麼<br>
 <!-- -->因此只需要知道以下基本知識</p>
 <ol>
-<li>使用 UDP</li>
-<li>若藉由它傳遞 ipv4， Header 是 20 Bytes，ipv6 則為 40 Bytes</li>
+<li>他使用 UDP，TCP 標頭是 20 Bytes, UDP 標頭是 8 Bytes</li>
+<li>ipv4 標頭 是 20 Bytes，ipv6 則為 40 Bytes</li>
 <li>他還會需要額外的 32 bytes 的標頭</li>
 </ol>
 <p>看到這邊<br>
